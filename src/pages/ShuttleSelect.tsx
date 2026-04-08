@@ -106,7 +106,7 @@ const ShuttleSelect = () => {
         <div className="fixed bottom-14 left-0 right-0 p-4 bg-card border-t border-border animate-slide-up">
           <Button
             className="w-full h-12 rounded-xl font-bold text-base bg-accent text-accent-foreground hover:bg-accent/90"
-            onClick={() => navigate("/booking?type=shuttle")}
+            onClick={() => navigate("/shuttle-seat")}
           >
             Reservasi Seat
           </Button>
