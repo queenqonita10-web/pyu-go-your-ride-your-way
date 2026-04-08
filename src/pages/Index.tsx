@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Bell, Search, MapPin, ChevronRight } from "lucide-react";
+import { Bell, Search, MapPin } from "lucide-react";
 import ServiceToggle from "@/components/ServiceToggle";
 import MapView from "@/components/MapView";
 import QuickActions from "@/components/QuickActions";
@@ -33,8 +33,8 @@ const Index = () => {
         <MapView />
       </div>
 
-      {/* Service Toggle */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10" style={{ bottom: "260px" }}>
+      {/* Service Toggle — positioned above bottom sheet */}
+      <div className="absolute left-1/2 -translate-x-1/2 z-10 px-4 w-full max-w-md" style={{ bottom: "280px" }}>
         <ServiceToggle mode={mode} onChange={setMode} />
       </div>
 
@@ -45,25 +45,59 @@ const Index = () => {
           {/* Quick Actions */}
           <QuickActions />
 
+          {/* Context Banner */}
+          {mode === "hailing" ? (
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-accent/10 border-l-4 border-accent">
+              <span className="text-base">⚡</span>
+              <p className="text-xs font-semibold text-foreground">Jemput sekarang, langsung ke tujuan</p>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border-l-4 border-green-500">
+              <span className="text-base">💰</span>
+              <p className="text-xs font-semibold text-foreground">Rute tetap, harga hemat, kursi terbatas</p>
+            </div>
+          )}
+
           {/* Pickup & Destination */}
-          <button
-            onClick={() => navigate("/search")}
-            className="w-full flex items-center gap-3 bg-secondary rounded-xl p-3"
-          >
-            <div className="flex flex-col items-center gap-1">
-              <div className="w-2.5 h-2.5 rounded-full bg-success border-2 border-success/30" />
-              <div className="w-px h-4 bg-border" />
-              <div className="w-2.5 h-2.5 rounded-sm bg-destructive border-2 border-destructive/30" />
-            </div>
-            <div className="flex-1 text-left">
-              <p className="text-xs text-muted-foreground">Lokasi jemput</p>
-              <p className="text-sm font-semibold text-foreground">Lokasi saat ini</p>
-              <div className="border-t border-border my-1.5" />
-              <p className="text-xs text-muted-foreground">Tujuan</p>
-              <p className="text-sm font-medium text-muted-foreground">Mau ke mana?</p>
-            </div>
-            <Search className="h-5 w-5 text-muted-foreground" />
-          </button>
+          {mode === "hailing" ? (
+            <button
+              onClick={() => navigate("/search")}
+              className="w-full flex items-center gap-3 bg-secondary rounded-xl p-3"
+            >
+              <div className="flex flex-col items-center gap-1">
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-green-500/30" />
+                <div className="w-px h-4 bg-border" />
+                <div className="w-2.5 h-2.5 rounded-sm bg-destructive border-2 border-destructive/30" />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="text-xs text-muted-foreground">Lokasi jemput</p>
+                <p className="text-sm font-semibold text-foreground">Lokasi saat ini</p>
+                <div className="border-t border-border my-1.5" />
+                <p className="text-xs text-muted-foreground">Tujuan</p>
+                <p className="text-sm font-medium text-muted-foreground">Mau ke mana?</p>
+              </div>
+              <Search className="h-5 w-5 text-muted-foreground" />
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate("/shuttle")}
+              className="w-full flex items-center gap-3 bg-secondary rounded-xl p-3"
+            >
+              <div className="flex flex-col items-center gap-1">
+                <MapPin className="h-4 w-4 text-primary" />
+                <div className="w-px h-4 bg-border" />
+                <MapPin className="h-4 w-4 text-destructive" />
+              </div>
+              <div className="flex-1 text-left">
+                <p className="text-xs text-muted-foreground">Titik jemput</p>
+                <p className="text-sm font-semibold text-foreground">Pilih titik jemput</p>
+                <div className="border-t border-border my-1.5" />
+                <p className="text-xs text-muted-foreground">Titik turun</p>
+                <p className="text-sm font-semibold text-foreground">Pilih titik turun</p>
+              </div>
+              <Search className="h-5 w-5 text-muted-foreground" />
+            </button>
+          )}
 
           {mode === "hailing" ? (
             <Button
