@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, Clock, Tag } from "lucide-react";
+import { ArrowLeft, Users, Clock, Tag, Route } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import MapView from "@/components/MapView";
@@ -42,12 +42,20 @@ const RideSelect = () => {
         <div className="flex items-center gap-2">
           <div className="flex flex-col items-center gap-0.5">
             <div className="w-2 h-2 rounded-full bg-success" />
-            <div className="w-px h-3 bg-border" />
+            <div className="w-px h-1 bg-border" />
+            <div className="w-1 h-1 rounded-full bg-primary/40" />
+            <div className="w-px h-1 bg-border" />
             <div className="w-2 h-2 rounded-sm bg-destructive" />
           </div>
           <div className="flex-1">
             <p className="text-xs font-semibold text-foreground">Lokasi saat ini</p>
             <p className="text-xs font-semibold text-foreground">KNO Airport</p>
+          </div>
+          <div className="text-right">
+            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+              <Route className="h-3 w-3" />
+              <span className="font-semibold">~39 km</span>
+            </div>
           </div>
         </div>
       </div>
@@ -70,7 +78,7 @@ const RideSelect = () => {
               className={cn(
                 "w-full flex items-center gap-3 p-3 rounded-xl border transition-all",
                 selected === v.id
-                  ? "border-primary bg-primary/5 shadow-sm"
+                  ? "border-primary bg-primary/5 shadow-sm ring-1 ring-primary/20"
                   : "border-border bg-card"
               )}
             >

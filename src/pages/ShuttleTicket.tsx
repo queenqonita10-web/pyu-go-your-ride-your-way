@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Clock, MapPin, Users, QrCode, Download, Share2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const ShuttleTicket = () => {
   const navigate = useNavigate();
@@ -17,12 +18,29 @@ const ShuttleTicket = () => {
       <div className="px-4 -mt-4 space-y-4">
         {/* Ticket card */}
         <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm">
+          {/* Status badge */}
+          <div className="flex justify-center pt-4">
+            <Badge className="bg-success/10 text-success border-success/20 font-bold text-xs px-3">
+              ● Aktif
+            </Badge>
+          </div>
+
           {/* QR Code */}
-          <div className="flex flex-col items-center py-6 border-b border-dashed border-border">
+          <div className="flex flex-col items-center py-4 border-b border-dashed border-border relative">
             <div className="w-36 h-36 bg-secondary rounded-xl flex items-center justify-center mb-3">
               <QrCode className="h-20 w-20 text-muted-foreground" />
             </div>
-            <p className="text-xs text-muted-foreground font-medium">PYU-SHT-240408-001</p>
+            <p className="text-[10px] text-muted-foreground font-medium mb-1">PYU-SHT-240408-001</p>
+            <p className="text-xs text-primary font-semibold">📲 Tunjukkan ke driver saat boarding</p>
+
+            {/* Tear-off circles */}
+            <div className="absolute -left-3 bottom-0 w-6 h-6 bg-background rounded-full" />
+            <div className="absolute -right-3 bottom-0 w-6 h-6 bg-background rounded-full" />
+          </div>
+
+          {/* Countdown */}
+          <div className="px-4 py-2 bg-primary/5 text-center">
+            <p className="text-xs font-bold text-primary">⏱ Berangkat dalam 2 jam 15 menit</p>
           </div>
 
           {/* Details */}

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Clock, Users, MapPin, Filter } from "lucide-react";
+import { ArrowLeft, Clock, Users, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
 interface ShuttleDeparture {
@@ -25,10 +26,19 @@ const departures: ShuttleDeparture[] = [
 
 const timeFilters = ["Semua", "Pagi", "Siang", "Sore"];
 
+const getSeatColor = (seats: number) => {
+  if (seats <= 1) return "text-destructive";
+  if (seats <= 3) return "text-yellow-600";
+  return "text-success";
+};
+
 const ShuttleSelect = () => {
   const navigate = useNavigate();
   const [filter, setFilter] = useState("Semua");
   const [selected, setSelected] = useState<string | null>(null);
+
+  // Nearest departure is the first one
+  const nearestId = departures[0].id;
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -38,8 +48,13 @@ const ShuttleSelect = () => {
           <button onClick={() => navigate(-1)} className="text-foreground">
             <ArrowLeft className="h-5 w-5" />
           </button>
-          <div>
-            <h2 className="font-bold text-foreground">Medan → KNO Airport</h2>
+          <div className="flex-1">
+            {/* Visual route header */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-extrabold text-foreground">Medan</span>
+              <ArrowRight className="h-4 w-4 text-primary" />
+              <span className="text-sm font-extrabold text-foreground">KNO Airport</span>
+            </div>
             <p className="text-xs text-muted-foreground">Hari ini • 1 penumpang</p>
           </div>
         </div>
@@ -65,6 +80,8 @@ const ShuttleSelect = () => {
 
       {/* Departures */}
       <div className="p-4 space-y-2">
+        <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">Tersedia hari ini</p>
+
         {departures.map((dep) => (
           <button
             key={dep.id}
@@ -80,6 +97,11 @@ const ShuttleSelect = () => {
               <div className="flex items-center gap-2">
                 <span className="text-lg font-extrabold text-foreground">{dep.time}</span>
                 <span className="text-xs text-muted-foreground bg-secondary px-2 py-0.5 rounded-md">{dep.duration}</span>
+                {dep.id === nearestId && (
+                  <Badge className="text-[10px] bg-primary/10 text-primary border-primary/20 px-1.5 py-0">
+                    Segera
+                  </Badge>
+                )}
               </div>
               <span className="text-sm font-extrabold text-foreground">{dep.price}</span>
             </div>
@@ -92,11 +114,14 @@ const ShuttleSelect = () => {
               <span>•</span>
               <span className={cn(
                 "flex items-center gap-1 font-bold",
-                dep.seatsLeft <= 2 ? "text-destructive" : "text-success"
+                getSeatColor(dep.seatsLeft)
               )}>
                 <Users className="h-3 w-3" /> {dep.seatsLeft}/{dep.totalSeats}
               </span>
             </div>
+            {dep.id === nearestId && (
+              <p className="text-[10px] text-primary font-semibold mt-1.5">⏱ Berangkat dalam 45 menit</p>
+            )}
           </button>
         ))}
       </div>

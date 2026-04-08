@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, Clock, MapPin } from "lucide-react";
+import { ArrowLeft, Users, Clock, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -55,10 +55,18 @@ const ShuttleSeatSelect = () => {
           </button>
           <h2 className="font-bold text-foreground">Pilih Kursi</h2>
         </div>
-        <div className="flex items-center gap-4 text-xs text-muted-foreground">
-          <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> 06:00</span>
-          <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Medan Fair</span>
-          <span>Hiace • 8 seat</span>
+
+        {/* Departure summary bar */}
+        <div className="flex items-center gap-3 bg-secondary rounded-lg px-3 py-2 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1 font-semibold text-foreground">
+            <Clock className="h-3 w-3 text-primary" /> 06:00
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1">
+            Medan Fair <ArrowRight className="h-3 w-3" /> KNO
+          </span>
+          <span>•</span>
+          <span>Hiace</span>
         </div>
       </div>
 
@@ -79,8 +87,9 @@ const ShuttleSeatSelect = () => {
       {/* Seat grid */}
       <div className="px-4">
         <div className="bg-card rounded-2xl border border-border p-6">
-          {/* Driver area */}
-          <div className="flex justify-end mb-6">
+          {/* Driver area & door */}
+          <div className="flex justify-between items-center mb-6">
+            <span className="text-[10px] text-muted-foreground font-medium bg-secondary px-2 py-1 rounded">🚪 Pintu</span>
             <div className="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center text-xs text-muted-foreground font-bold">
               🚐
             </div>
