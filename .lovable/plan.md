@@ -1,79 +1,42 @@
 
 
-# PYU-GO — Hybrid Mobility App
+# Dual-Mode System Redesign — "Understand in < 3 seconds"
 
-## Design Direction
-Functional & dense UI (Gojek-inspired), interactive map, unified home screen with both Hailing and Shuttle services.
+## Problem
+The current toggle is a minimal pill-switch with no visual explanation of what each mode means. Users must tap to discover the difference.
 
-## Pages & Features
+## Solution
+Redesign the ServiceToggle and bottom sheet to immediately communicate the value proposition of each mode through visual cues, micro-copy, and distinct UI states.
 
-### 1. Home Screen (Unified Hub)
-- **Top bar**: User greeting, notification bell, profile avatar
-- **Interactive map** showing user's current location with nearby drivers/shuttles
-- **Service toggle** (Hailing / Shuttle) as a prominent pill-switch overlaying the bottom of the map
-- **Quick booking card** (bottom sheet):
-  - Pickup & destination fields (tap to expand into search)
-  - For **Hailing**: "Book Now" CTA
-  - For **Shuttle**: Date/time picker + passenger count + "Find Shuttles" CTA
-- **Quick actions row**: Airport Transfer, Saved Places, Promo
+## Changes
 
-### 2. Location Search
-- Full-screen search overlay with text input
-- Recent locations, saved places, popular destinations (KNO Airport pinned)
-- Search results with address + distance
-- "Set on map" option for pickup pin adjustment
+### 1. ServiceToggle.tsx — Visual Differentiation Cards
+Replace the plain pill-switch with a **two-card selector** that shows key traits at a glance:
 
-### 3. Ride Selection (Hailing)
-- Bottom sheet listing vehicle options (Motor, Car, Car XL) with price, ETA, capacity
-- Each option shows icon, name, price estimate, arrival time
-- Promo/discount badge if applicable
-- "Confirm Booking" CTA
+- **Hailing card**: Icon (🚗), label "Hailing", one-liner tagline chips: "Instan", "Pribadi", "Door-to-door"
+- **Shuttle card**: Icon (🚌), label "Shuttle", tagline chips: "Terjadwal", "Berbagi", "Lebih Hemat"
+- Active card gets primary border + subtle background tint; inactive card is muted
+- Compact layout — two cards side by side, each ~50% width
 
-### 4. Shuttle Selection
-- List of available shuttle departures for the chosen route/date
-- Each card: departure time, seats available, price, vehicle type, pickup point
-- Filter by time-of-day
-- "Reserve Seat" CTA
+### 2. Index.tsx — Mode-Aware Bottom Sheet Context Banner
+Add a small **context banner** inside the bottom sheet that reinforces the selected mode:
 
-### 5. Booking Confirmation
-- Route summary with pickup → destination
-- Service type, vehicle, price breakdown
-- Payment method selector (Cash, E-Wallet, Card)
-- "Confirm & Pay" button
+- **Hailing mode**: Shows "⚡ Jemput sekarang, langsung ke tujuan" with an amber/accent left border
+- **Shuttle mode**: Shows "💰 Rute tetap, harga hemat, kursi terbatas" with a green/success left border
+- Animates on mode switch (fade transition)
 
-### 6. Live Tracking
-- Full-screen map with driver/shuttle location in real-time
-- Driver info card: name, photo, vehicle, plate number, rating
-- Contact driver (call/chat) buttons
-- ETA countdown
-- "Cancel Ride" option
+### 3. Index.tsx — Differentiated Pickup/Destination UX
+- **Hailing**: Keep current free-form pickup/destination input ("Lokasi saat ini" → "Mau ke mana?")
+- **Shuttle**: Replace with a **route selector** feel — "Pilih titik jemput" and "Pilih titik turun" with a pin icon, signaling fixed points (not arbitrary locations)
 
-### 7. Ride History
-- List of past rides with date, route, price, service type
-- Tap to see ride details and receipt
-- Re-book button for frequent routes
+### 4. CTA Buttons — Distinct Language & Color
+Already partially done. Reinforce:
+- Hailing: "Pesan Sekarang" (amber accent) — urgency
+- Shuttle: "Cari Shuttle" (amber accent) with date/passenger selectors — planning
 
-### 8. Profile & Settings
-- User info (name, phone, email)
-- Saved places management
-- Payment methods
-- Language toggle (ID/EN)
-- Notification preferences
-- Help & Support link
+## Files to Edit
+1. `src/components/ServiceToggle.tsx` — rebuild as dual-card selector with trait chips
+2. `src/pages/Index.tsx` — add context banner, differentiate pickup UX per mode
 
-### 9. Notifications
-- Booking confirmations, driver assigned, shuttle reminders
-- Promo alerts
-- System notifications
-
-## Color & Branding
-- Primary: Deep blue (#1a365d) — trust, transport
-- Accent: Bright yellow/amber — energy, CTAs
-- Functional dense layout with compact cards, icon-heavy navigation
-- Bottom tab navigation: Home, Activity, Notifications, Profile
-
-## Mobile-First
-- Designed for mobile viewport primarily
-- Bottom sheet patterns for booking flows
-- Thumb-friendly tap targets
+## No New Dependencies
 
