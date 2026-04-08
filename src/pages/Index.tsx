@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Bell, Search, MapPin } from "lucide-react";
 import ServiceToggle from "@/components/ServiceToggle";
 import MapView from "@/components/MapView";
-import QuickActions from "@/components/QuickActions";
+import PricePreview from "@/components/PricePreview";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 
@@ -33,30 +33,12 @@ const Index = () => {
         <MapView />
       </div>
 
-      {/* Service Toggle — positioned above bottom sheet */}
-      <div className="absolute left-1/2 -translate-x-1/2 z-10 px-4 w-full max-w-md" style={{ bottom: "280px" }}>
-        <ServiceToggle mode={mode} onChange={setMode} />
-      </div>
-
       {/* Bottom Sheet */}
       <div className="absolute bottom-14 left-0 right-0 z-10 bg-card rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.08)] border-t border-border animate-slide-up">
         <div className="w-10 h-1 bg-muted rounded-full mx-auto mt-2" />
         <div className="p-4 space-y-3">
-          {/* Quick Actions */}
-          <QuickActions />
-
-          {/* Context Banner */}
-          {mode === "hailing" ? (
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-accent/10 border-l-4 border-accent">
-              <span className="text-base">⚡</span>
-              <p className="text-xs font-semibold text-foreground">Jemput sekarang, langsung ke tujuan</p>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border-l-4 border-green-500">
-              <span className="text-base">💰</span>
-              <p className="text-xs font-semibold text-foreground">Rute tetap, harga hemat, kursi terbatas</p>
-            </div>
-          )}
+          {/* Service Toggle inside sheet */}
+          <ServiceToggle mode={mode} onChange={setMode} />
 
           {/* Pickup & Destination */}
           {mode === "hailing" ? (
@@ -99,6 +81,10 @@ const Index = () => {
             </button>
           )}
 
+          {/* Price Preview */}
+          <PricePreview mode={mode} />
+
+          {/* CTA */}
           {mode === "hailing" ? (
             <Button
               className="w-full h-12 rounded-xl font-bold text-base bg-accent text-accent-foreground hover:bg-accent/90"
