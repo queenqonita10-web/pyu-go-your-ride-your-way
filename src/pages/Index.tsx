@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { Bell, Search, MapPin } from "lucide-react";
 import ServiceToggle from "@/components/ServiceToggle";
@@ -7,16 +7,25 @@ import PricePreview from "@/components/PricePreview";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 
+const getGreeting = () => {
+  const h = new Date().getHours();
+  if (h < 11) return "Selamat pagi ☀️";
+  if (h < 15) return "Selamat siang 🌤️";
+  if (h < 18) return "Selamat sore 🌅";
+  return "Selamat malam 🌙";
+};
+
 const Index = () => {
   const [mode, setMode] = useState<"hailing" | "shuttle">("hailing");
   const navigate = useNavigate();
+  const greeting = useMemo(getGreeting, []);
 
   return (
     <div className="h-screen flex flex-col relative">
       {/* Top bar */}
       <div className="absolute top-0 left-0 right-0 z-10 px-4 pt-3 pb-2 flex items-center justify-between bg-gradient-to-b from-background/90 to-transparent">
-        <div>
-          <p className="text-xs text-muted-foreground font-medium">Selamat datang 👋</p>
+        <div className="animate-fade-in">
+          <p className="text-xs text-muted-foreground font-medium">{greeting}</p>
           <h1 className="text-lg font-extrabold text-foreground tracking-tight">PYU-GO</h1>
         </div>
         <button
