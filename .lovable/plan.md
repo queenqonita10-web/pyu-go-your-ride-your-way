@@ -1,42 +1,40 @@
 
 
-# Dual-Mode System Redesign — "Understand in < 3 seconds"
+# Home Screen Redesign — Instant Decision, Zero Confusion
 
-## Problem
-The current toggle is a minimal pill-switch with no visual explanation of what each mode means. Users must tap to discover the difference.
-
-## Solution
-Redesign the ServiceToggle and bottom sheet to immediately communicate the value proposition of each mode through visual cues, micro-copy, and distinct UI states.
+## Current State
+The home screen already has a dual-card ServiceToggle, context banners, differentiated location inputs, and mode-specific CTAs. The structure is solid but can be improved for clarity, visual hierarchy, and adding the requested **price preview**.
 
 ## Changes
 
-### 1. ServiceToggle.tsx — Visual Differentiation Cards
-Replace the plain pill-switch with a **two-card selector** that shows key traits at a glance:
+### 1. ServiceToggle.tsx — Enhanced Card Layout with Price Anchoring
+Upgrade the two-card selector to include a price hint so users immediately understand the cost difference:
+- **Hailing card**: Car icon, "Ride Now" subtitle, chips "Instan · Pribadi", price hint "~Rp 350rb"
+- **Shuttle card**: Bus icon, "Airport Shuttle" subtitle, chips "Terjadwal · Hemat", price hint "~Rp 150rb"
+- Active card: primary border + filled background + scale-up subtle transform
+- Inactive card: muted, slightly smaller, dashed border
 
-- **Hailing card**: Icon (🚗), label "Hailing", one-liner tagline chips: "Instan", "Pribadi", "Door-to-door"
-- **Shuttle card**: Icon (🚌), label "Shuttle", tagline chips: "Terjadwal", "Berbagi", "Lebih Hemat"
-- Active card gets primary border + subtle background tint; inactive card is muted
-- Compact layout — two cards side by side, each ~50% width
+### 2. Index.tsx — Streamlined Bottom Sheet
+Restructure the bottom sheet for a cleaner flow:
+1. **ServiceToggle** — move inside the bottom sheet (not floating above it) for a more cohesive feel
+2. **Location input** — already mode-aware, keep as-is
+3. **Price preview row** — new compact row showing estimated price range and ETA
+   - Hailing: "~Rp 300-400rb · 5 min pickup"
+   - Shuttle: "~Rp 150rb/org · Berangkat 14:00"
+4. **CTA button** — full-width, prominent
 
-### 2. Index.tsx — Mode-Aware Bottom Sheet Context Banner
-Add a small **context banner** inside the bottom sheet that reinforces the selected mode:
+Remove the QuickActions row to reduce clutter and keep focus on the primary booking flow. (Can be moved to a dedicated explore section later.)
 
-- **Hailing mode**: Shows "⚡ Jemput sekarang, langsung ke tujuan" with an amber/accent left border
-- **Shuttle mode**: Shows "💰 Rute tetap, harga hemat, kursi terbatas" with a green/success left border
-- Animates on mode switch (fade transition)
-
-### 3. Index.tsx — Differentiated Pickup/Destination UX
-- **Hailing**: Keep current free-form pickup/destination input ("Lokasi saat ini" → "Mau ke mana?")
-- **Shuttle**: Replace with a **route selector** feel — "Pilih titik jemput" and "Pilih titik turun" with a pin icon, signaling fixed points (not arbitrary locations)
-
-### 4. CTA Buttons — Distinct Language & Color
-Already partially done. Reinforce:
-- Hailing: "Pesan Sekarang" (amber accent) — urgency
-- Shuttle: "Cari Shuttle" (amber accent) with date/passenger selectors — planning
+### 3. New Component: PricePreview.tsx
+Small component showing:
+- Estimated price (bold)
+- ETA or next departure time
+- Mode-specific icon/color
 
 ## Files to Edit
-1. `src/components/ServiceToggle.tsx` — rebuild as dual-card selector with trait chips
-2. `src/pages/Index.tsx` — add context banner, differentiate pickup UX per mode
+1. `src/components/ServiceToggle.tsx` — add price hints, visual polish
+2. `src/pages/Index.tsx` — move toggle into sheet, add price preview, remove QuickActions
+3. `src/components/PricePreview.tsx` — new component for price/ETA preview
 
 ## No New Dependencies
 
