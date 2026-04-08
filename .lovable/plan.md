@@ -1,43 +1,36 @@
 
 
-# Two Separated Booking Flows — Hailing & Shuttle
+# Clear Pricing Display with Savings Comparison
 
-## Current State
-- **Hailing flow exists**: Home → LocationSearch → RideSelect → BookingConfirmation → LiveTracking. Mostly complete but BookingConfirmation is generic (not mode-aware).
-- **Shuttle flow exists partially**: Home → ShuttleSelect → BookingConfirmation. Missing dedicated pages for seat selection and ticket confirmation.
-- Both flows share BookingConfirmation, which only shows hailing-style content.
+## Changes
 
-## Plan
+### 1. PricePreview.tsx — Redesign with pricing clarity and savings badge
 
-### Hailing Flow (6 steps — mostly exists, needs polish)
-`Home → /search → /ride-select → /booking → /tracking`
+**Hailing mode:**
+- Label: "Estimasi tarif" (estimated fare) with a subtle "Harga dapat berubah" disclaimer
+- Price: `~Rp 300-400rb` with a pulsing/dynamic indicator icon
+- Keep pickup ETA
 
-1. **LocationSearch.tsx** — No changes needed. Already handles pickup/destination input.
-2. **RideSelect.tsx** — No changes needed. Shows price + vehicle selection.
-3. **BookingConfirmation.tsx** — Refactor to be mode-aware via `?type=hailing` query param. Keep existing content for hailing mode.
-4. **LiveTracking.tsx** — No changes needed. Already shows driver info + live tracking.
+**Shuttle mode:**
+- Label: "Harga pasti" (fixed price) with "Sudah termasuk semua biaya" (all-in, no extra cost)
+- Price: `Rp 150.000/org` (no tilde — it's fixed)
+- Add a green savings badge: "Hemat hingga 40%" (Save up to 40%)
+- Keep departure time
 
-### Shuttle Flow (6 steps — needs 2 new pages)
-`Home → /shuttle → /shuttle-seat → /shuttle-booking → /shuttle-ticket`
+### 2. ServiceToggle.tsx — Add pricing language to cards
 
-1. **ShuttleSelect.tsx** — Minor update: after selecting a departure, navigate to `/shuttle-seat` instead of `/booking`.
-2. **New: ShuttleSeatSelect.tsx** (`/shuttle-seat`) — Visual seat map grid showing available/taken/selected seats. Displays selected departure info at top. CTA: "Lanjut ke Pembayaran".
-3. **New: ShuttleBooking.tsx** (`/shuttle-booking`) — Shuttle-specific confirmation page: route summary, departure time, seat number, passenger count, shuttle-specific payment options (no cash — prepaid only). Price breakdown (per-seat pricing). CTA: "Bayar & Konfirmasi".
-4. **New: ShuttleTicket.tsx** (`/shuttle-ticket`) — E-ticket page with QR code placeholder, departure time, seat number, pickup point, vehicle info. "Simpan Tiket" and "Bagikan" buttons. Clean, printable layout.
+- Hailing card: change `~Rp 350rb` to `~Rp 350rb*` with micro-text "estimasi" below
+- Shuttle card: change `~Rp 150rb` to `Rp 150rb` (no tilde) with micro-text "harga pasti" below
 
-### Shared Updates
-5. **BookingConfirmation.tsx** — Add `type` query param check. If `type=shuttle`, redirect to `/shuttle-booking`. Keep hailing flow as-is.
-6. **App.tsx** — Register 3 new routes: `/shuttle-seat`, `/shuttle-booking`, `/shuttle-ticket`.
+### 3. Index.tsx — Add comparison banner when shuttle is selected
 
-## Files to Create
-1. `src/pages/ShuttleSeatSelect.tsx` — seat picker with grid layout
-2. `src/pages/ShuttleBooking.tsx` — shuttle-specific booking confirmation
-3. `src/pages/ShuttleTicket.tsx` — e-ticket display
+When mode is "shuttle", show a compact comparison strip above the PricePreview:
+- "💰 Hemat hingga 40% dibanding Hailing" in a green-tinted banner
 
 ## Files to Edit
-1. `src/pages/ShuttleSelect.tsx` — update navigation target
-2. `src/App.tsx` — add 3 new routes
-3. `src/pages/BookingConfirmation.tsx` — redirect shuttle type to dedicated page
+1. `src/components/PricePreview.tsx` — full redesign with labels, disclaimers, savings badge
+2. `src/components/ServiceToggle.tsx` — pricing language tweaks
+3. `src/pages/Index.tsx` — add savings comparison banner for shuttle mode
 
 ## No New Dependencies
 
