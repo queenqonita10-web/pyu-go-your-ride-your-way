@@ -41,7 +41,8 @@ const ServiceToggle = ({ mode, onChange }: ServiceToggleProps) => {
             </span>
           ))}
         </div>
-        <p className="text-xs font-bold text-accent">~Rp 350rb</p>
+        <p className="text-xs font-bold text-accent">~Rp 350rb*</p>
+        <p className="text-[9px] text-muted-foreground font-medium">estimasi</p>
       </button>
 
       {/* Shuttle Card */}
@@ -76,7 +77,8 @@ const ServiceToggle = ({ mode, onChange }: ServiceToggleProps) => {
             </span>
           ))}
         </div>
-        <p className="text-xs font-bold text-green-500">~Rp 150rb</p>
+        <p className="text-xs font-bold text-green-500">Rp 150rb</p>
+        <p className="text-[9px] text-green-600 font-medium">harga pasti</p>
       </button>
     </div>
   );
