@@ -81,6 +81,14 @@ const Index = () => {
             </button>
           )}
 
+          {/* Savings Banner */}
+          {mode === "shuttle" && (
+            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20">
+              <span className="text-sm">💰</span>
+              <span className="text-xs font-bold text-green-600">Hemat hingga 40% dibanding Hailing</span>
+            </div>
+          )}
+
           {/* Price Preview */}
           <PricePreview mode={mode} />
 
