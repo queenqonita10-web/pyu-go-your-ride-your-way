@@ -1,20 +1,21 @@
-import { Home, Clock, Bell, User } from "lucide-react";
+import { Home, Route, Ticket, User } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 const tabs = [
   { icon: Home, label: "Home", path: "/" },
-  { icon: Clock, label: "Activity", path: "/history" },
-  { icon: Bell, label: "Notifikasi", path: "/notifications" },
+  { icon: Route, label: "Trips", path: "/history" },
+  { icon: Ticket, label: "Tiket", path: "/shuttle-ticket" },
   { icon: User, label: "Profil", path: "/profile" },
 ];
+
+const hiddenPaths = ["/tracking", "/search", "/ride-select", "/booking", "/shuttle", "/shuttle-seat", "/shuttle-booking"];
 
 const BottomNav = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Hide on tracking page
-  if (location.pathname.startsWith("/tracking")) return null;
+  if (hiddenPaths.some((p) => location.pathname.startsWith(p))) return null;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border">
