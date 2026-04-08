@@ -9,6 +9,9 @@ import Index from "./pages/Index";
 import LocationSearch from "./pages/LocationSearch";
 import RideSelect from "./pages/RideSelect";
 import ShuttleSelect from "./pages/ShuttleSelect";
+import ShuttleSeatSelect from "./pages/ShuttleSeatSelect";
+import ShuttleBooking from "./pages/ShuttleBooking";
+import ShuttleTicket from "./pages/ShuttleTicket";
 import BookingConfirmation from "./pages/BookingConfirmation";
 import LiveTracking from "./pages/LiveTracking";
 import RideHistory from "./pages/RideHistory";
@@ -29,6 +32,9 @@ const App = () => (
           <Route path="/search" element={<LocationSearch />} />
           <Route path="/ride-select" element={<RideSelect />} />
           <Route path="/shuttle" element={<ShuttleSelect />} />
+          <Route path="/shuttle-seat" element={<ShuttleSeatSelect />} />
+          <Route path="/shuttle-booking" element={<ShuttleBooking />} />
+          <Route path="/shuttle-ticket" element={<ShuttleTicket />} />
           <Route path="/booking" element={<BookingConfirmation />} />
           <Route path="/tracking" element={<LiveTracking />} />
           <Route path="/history" element={<RideHistory />} />
