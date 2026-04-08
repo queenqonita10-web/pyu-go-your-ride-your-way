@@ -32,7 +32,7 @@ const ShuttleBooking = () => {
         <div className="bg-card rounded-xl border border-border p-4">
           <div className="flex items-start gap-3">
             <div className="flex flex-col items-center gap-0.5 mt-1">
-              <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+              <div className="w-2.5 h-2.5 rounded-full bg-success" />
               <div className="w-px h-8 bg-border" />
               <div className="w-2.5 h-2.5 rounded-sm bg-destructive" />
             </div>
@@ -80,8 +80,8 @@ const ShuttleBooking = () => {
               <span className="text-foreground">Rp {total.toLocaleString("id-ID")}</span>
             </div>
             <div className="flex justify-between text-sm">
-              <span className="text-green-500 font-semibold">Promo hemat</span>
-              <span className="text-green-500 font-semibold">- Rp 10.000</span>
+              <span className="text-success font-semibold">Promo hemat</span>
+              <span className="text-success font-semibold">- Rp 10.000</span>
             </div>
             <div className="flex justify-between text-sm font-extrabold pt-2 border-t border-border">
               <span className="text-foreground">Total</span>
