@@ -27,6 +27,9 @@ import HailingAnalytics from "./pages/admin/HailingAnalytics";
 import ShuttleAnalytics from "./pages/admin/ShuttleAnalytics";
 import RayonManagement from "./pages/admin/RayonManagement";
 import PricingControl from "./pages/admin/PricingControl";
+import TripsMonitoring from "./pages/admin/TripsMonitoring";
+import BookingsTable from "./pages/admin/BookingsTable";
+import RevenueAnalytics from "./pages/admin/RevenueAnalytics";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +57,9 @@ const App = () => (
           <Route path="/driver/withdraw" element={<DriverWithdraw />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
+            <Route path="trips" element={<TripsMonitoring />} />
+            <Route path="bookings" element={<BookingsTable />} />
+            <Route path="revenue" element={<RevenueAnalytics />} />
             <Route path="hailing" element={<HailingAnalytics />} />
             <Route path="shuttle" element={<ShuttleAnalytics />} />
             <Route path="rayons" element={<RayonManagement />} />
