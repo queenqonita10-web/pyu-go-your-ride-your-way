@@ -36,7 +36,7 @@ const getSeatColor = (seats: number) => {
 const ShuttleSelect = () => {
   const navigate = useNavigate();
   const [filter, setFilter] = useState("Semua");
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<string | null>(departures[0].id);
 
   // Nearest departure is the first one
   const nearestId = departures[0].id;
@@ -79,6 +79,13 @@ const ShuttleSelect = () => {
         </div>
       </div>
 
+      {/* Savings bar */}
+      <div className="sticky top-0 z-10 bg-success/10 border-b border-success/20 px-4 py-2.5 flex items-center gap-2">
+        <span className="text-sm">💰</span>
+        <span className="text-xs font-bold text-success">Hemat Rp 200rb+ vs Hailing</span>
+        <span className="text-[10px] text-muted-foreground ml-auto">Hailing ~Rp 350.000</span>
+      </div>
+
       {/* Departures */}
       <div className="p-4 space-y-2">
         <p className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-1">Tersedia hari ini</p>
@@ -103,6 +110,12 @@ const ShuttleSelect = () => {
                     Segera
                   </Badge>
                 )}
+                {dep.price === Math.min(...departures.map(d => parseInt(d.price.replace(/\D/g, "")))).toLocaleString("id-ID").replace(/\d+/, m => `Rp ${m}`) ? null : null}
+                {parseInt(dep.price.replace(/\D/g, "")) === Math.min(...departures.map(d => parseInt(d.price.replace(/\D/g, "")))) && (
+                  <Badge className="text-[10px] bg-success/10 text-success border-success/20 px-1.5 py-0">
+                    Termurah
+                  </Badge>
+                )}
               </div>
               <span className="text-sm font-extrabold text-foreground">{dep.price}</span>
             </div>
@@ -113,12 +126,15 @@ const ShuttleSelect = () => {
               <span>•</span>
               <span>{dep.vehicle}</span>
               <span>•</span>
-              <span className={cn(
-                "flex items-center gap-1 font-bold",
-                getSeatColor(dep.seatsLeft)
-              )}>
-                <Users className="h-3 w-3" /> {dep.seatsLeft}/{dep.totalSeats}
-              </span>
+              {dep.seatsLeft <= 3 ? (
+                <span className={cn("flex items-center gap-1 font-bold", getSeatColor(dep.seatsLeft))}>
+                  <Users className="h-3 w-3" /> 🔥 Sisa {dep.seatsLeft} kursi!
+                </span>
+              ) : (
+                <span className={cn("flex items-center gap-1 font-bold", getSeatColor(dep.seatsLeft))}>
+                  <Users className="h-3 w-3" /> {dep.seatsLeft}/{dep.totalSeats}
+                </span>
+              )}
             </div>
             {dep.id === nearestId && (
               <p className="text-[10px] text-primary font-semibold mt-1.5">⏱ Berangkat dalam 45 menit</p>

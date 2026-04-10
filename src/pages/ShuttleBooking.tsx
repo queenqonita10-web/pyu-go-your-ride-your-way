@@ -83,9 +83,16 @@ const ShuttleBooking = () => {
               <span className="text-success font-semibold">Promo hemat</span>
               <span className="text-success font-semibold">- Rp 10.000</span>
             </div>
+            <div className="flex justify-between text-xs pt-1.5">
+              <span className="text-muted-foreground">Hailing untuk rute ini</span>
+              <span className="text-muted-foreground line-through">~Rp 350.000</span>
+            </div>
             <div className="flex justify-between text-sm font-extrabold pt-2 border-t border-border">
               <span className="text-foreground">Total</span>
               <span className="text-foreground">Rp {(total - 10000).toLocaleString("id-ID")}</span>
+            </div>
+            <div className="flex items-center gap-1.5 pt-1">
+              <span className="text-xs font-bold text-success">Anda hemat ~Rp 275.000!</span>
             </div>
           </div>
         </div>
@@ -122,6 +129,12 @@ const ShuttleBooking = () => {
         <div className="flex items-center gap-2 text-xs text-muted-foreground bg-secondary rounded-lg p-3">
           <Shield className="h-4 w-4 text-primary" />
           <span>Perjalanan dilindungi asuransi kecelakaan</span>
+        </div>
+
+        {/* Urgency */}
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20">
+          <span className="text-sm">⏱</span>
+          <span className="text-xs font-bold text-primary">Berangkat dalam 45 menit — segera konfirmasi</span>
         </div>
 
         {/* CTA */}

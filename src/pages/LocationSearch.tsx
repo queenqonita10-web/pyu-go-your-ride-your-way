@@ -84,8 +84,12 @@ const LocationSearch = () => {
         <div className="flex-1 text-left">
           <p className="text-sm font-bold text-foreground">KNO Airport</p>
           <p className="text-xs text-muted-foreground">Kualanamu International Airport • 39 km</p>
+          <p className="text-[10px] text-success font-bold mt-0.5">Shuttle mulai Rp 75.000 <span className="text-muted-foreground font-normal">vs ~Rp 350rb Hailing</span></p>
         </div>
-        <span className="text-xs font-bold text-accent-foreground bg-accent px-2 py-1 rounded-md">Popular</span>
+        <div className="flex flex-col items-end gap-1">
+          <span className="text-xs font-bold text-accent-foreground bg-accent px-2 py-1 rounded-md">Popular</span>
+          <span className="text-[10px] font-bold text-success">Rp 75rb</span>
+        </div>
       </button>
 
       {/* Saved */}
