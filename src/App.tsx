@@ -20,6 +20,7 @@ import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 import DriverDashboard from "./pages/DriverDashboard";
 import DriverEarnings from "./pages/DriverEarnings";
+import DriverWithdraw from "./pages/DriverWithdraw";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/driver" element={<DriverDashboard />} />
           <Route path="/driver/earnings" element={<DriverEarnings />} />
+          <Route path="/driver/withdraw" element={<DriverWithdraw />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <BottomNav />
