@@ -56,7 +56,7 @@ const Index = () => {
               className="w-full flex items-center gap-3 bg-secondary rounded-xl p-3"
             >
               <div className="flex flex-col items-center gap-1">
-                <div className="w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-green-500/30" />
+                <div className="w-2.5 h-2.5 rounded-full bg-success border-2 border-success/30" />
                 <div className="w-px h-4 bg-border" />
                 <div className="w-2.5 h-2.5 rounded-sm bg-destructive border-2 border-destructive/30" />
               </div>
