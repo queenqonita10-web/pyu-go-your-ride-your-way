@@ -43,6 +43,7 @@ const App = () => (
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/driver" element={<DriverDashboard />} />
+          <Route path="/driver/earnings" element={<DriverEarnings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <BottomNav />
