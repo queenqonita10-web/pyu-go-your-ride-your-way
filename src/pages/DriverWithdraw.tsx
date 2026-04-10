@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { ArrowLeft, CheckCircle2, Clock, Building2 } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Clock, Building2, Plus, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 import DriverBottomNav from "@/components/DriverBottomNav";
 
 const SALDO = 5250000;
 const ADMIN_FEE = 2500;
 
-const banks = [
-  { id: "bca", name: "BCA", number: "****4521", holder: "Ahmad Fauzi" },
-  { id: "mandiri", name: "Mandiri", number: "****7890", holder: "Ahmad Fauzi" },
+const bankOptions = ["BCA", "BNI", "BRI", "Mandiri", "CIMB", "Danamon", "BSI", "Permata"];
+
+const initialBanks = [
+  { id: "bca-1", name: "BCA", number: "****4521", holder: "Ahmad Fauzi" },
+  { id: "mandiri-1", name: "Mandiri", number: "****7890", holder: "Ahmad Fauzi" },
 ];
 
 const quickAmounts = [
@@ -34,8 +39,15 @@ const fmt = (n: number) => `Rp ${n.toLocaleString("id-ID")}`;
 const DriverWithdraw = () => {
   const navigate = useNavigate();
   const [amount, setAmount] = useState("");
-  const [selectedBank, setSelectedBank] = useState("bca");
+  const [banks, setBanks] = useState(initialBanks);
+  const [selectedBank, setSelectedBank] = useState("bca-1");
   const [confirmed, setConfirmed] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  // New bank form state
+  const [newBankName, setNewBankName] = useState("");
+  const [newBankNumber, setNewBankNumber] = useState("");
+  const [newBankHolder, setNewBankHolder] = useState("");
 
   const numAmount = parseInt(amount.replace(/\D/g, "")) || 0;
   const isValid = numAmount >= 10000 && numAmount <= SALDO;
@@ -50,6 +62,41 @@ const DriverWithdraw = () => {
     setAmount(val.toLocaleString("id-ID"));
   };
 
+  const handleAddBank = () => {
+    if (!newBankName || !newBankNumber || !newBankHolder) {
+      toast.error("Semua field wajib diisi");
+      return;
+    }
+    if (newBankNumber.length < 8) {
+      toast.error("Nomor rekening minimal 8 digit");
+      return;
+    }
+    const id = `${newBankName.toLowerCase()}-${Date.now()}`;
+    const masked = "****" + newBankNumber.slice(-4);
+    const newBank = { id, name: newBankName, number: masked, holder: newBankHolder.trim() };
+    setBanks((prev) => [...prev, newBank]);
+    setSelectedBank(id);
+    setNewBankName("");
+    setNewBankNumber("");
+    setNewBankHolder("");
+    setDialogOpen(false);
+    toast.success(`Rekening ${newBankName} berhasil ditambahkan`);
+  };
+
+  const handleDeleteBank = (bankId: string) => {
+    if (banks.length <= 1) {
+      toast.error("Minimal harus ada satu rekening");
+      return;
+    }
+    setBanks((prev) => prev.filter((b) => b.id !== bankId));
+    if (selectedBank === bankId) {
+      setSelectedBank(banks.find((b) => b.id !== bankId)?.id || "");
+    }
+    toast("Rekening berhasil dihapus");
+  };
+
+  const selectedBankData = banks.find((b) => b.id === selectedBank);
+
   if (confirmed) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center">
@@ -58,7 +105,7 @@ const DriverWithdraw = () => {
         </div>
         <h2 className="text-lg font-bold text-foreground mb-1">Penarikan Berhasil</h2>
         <p className="text-sm text-muted-foreground mb-1">
-          {fmt(numAmount)} sedang diproses ke rekening {banks.find((b) => b.id === selectedBank)?.name} {banks.find((b) => b.id === selectedBank)?.number}
+          {fmt(numAmount)} sedang diproses ke rekening {selectedBankData?.name} {selectedBankData?.number}
         </p>
         <p className="text-xs text-muted-foreground mb-6">Estimasi 1-2 hari kerja</p>
         <Button onClick={() => navigate("/driver/earnings")} className="w-full max-w-xs">
@@ -135,9 +182,71 @@ const DriverWithdraw = () => {
                   <p className="text-sm font-semibold text-foreground">{bank.name} {bank.number}</p>
                   <p className="text-xs text-muted-foreground">{bank.holder}</p>
                 </div>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleDeleteBank(bank.id);
+                  }}
+                  className="p-1.5 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
               </label>
             ))}
           </RadioGroup>
+
+          {/* Add bank button */}
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <button className="w-full flex items-center justify-center gap-2 p-3 rounded-xl border border-dashed border-border text-sm font-semibold text-muted-foreground hover:border-primary hover:text-primary transition-colors">
+                <Plus className="h-4 w-4" />
+                Tambah Rekening
+              </button>
+            </DialogTrigger>
+            <DialogContent className="max-w-sm">
+              <DialogHeader>
+                <DialogTitle>Tambah Rekening Baru</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4 pt-2">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground">Nama Bank</label>
+                  <Select value={newBankName} onValueChange={setNewBankName}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Pilih bank" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {bankOptions.map((b) => (
+                        <SelectItem key={b} value={b}>{b}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground">Nomor Rekening</label>
+                  <Input
+                    placeholder="Masukkan nomor rekening"
+                    value={newBankNumber}
+                    onChange={(e) => setNewBankNumber(e.target.value.replace(/\D/g, ""))}
+                    maxLength={20}
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium text-foreground">Nama Pemilik</label>
+                  <Input
+                    placeholder="Nama sesuai rekening"
+                    value={newBankHolder}
+                    onChange={(e) => setNewBankHolder(e.target.value)}
+                    maxLength={100}
+                  />
+                </div>
+                <Button className="w-full" onClick={handleAddBank}>
+                  Simpan Rekening
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Summary */}
