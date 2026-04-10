@@ -72,6 +72,18 @@ const DriverEarnings = () => {
         </div>
         <p className="text-xs text-primary-foreground/70">Total bulan ini</p>
         <p className="text-2xl font-extrabold text-primary-foreground">Rp 12.450.000</p>
+        <div className="mt-3 flex items-center justify-between bg-primary-foreground/10 rounded-xl p-3">
+          <div>
+            <p className="text-[10px] text-primary-foreground/70">Saldo tersedia</p>
+            <p className="text-sm font-bold text-primary-foreground">Rp 5.250.000</p>
+          </div>
+          <button
+            onClick={() => navigate("/driver/withdraw")}
+            className="bg-primary-foreground text-primary text-xs font-bold px-4 py-2 rounded-lg"
+          >
+            Tarik Saldo
+          </button>
+        </div>
       </div>
 
       <div className="p-4 -mt-3 space-y-4">
