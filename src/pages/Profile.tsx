@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, MapPin, CreditCard, Globe, Bell as BellIcon, HelpCircle, ChevronRight, LogOut } from "lucide-react";
+import { ArrowLeft, MapPin, CreditCard, Globe, Bell as BellIcon, HelpCircle, ChevronRight, LogOut, Car, UserCheck } from "lucide-react";
 
 const menuItems = [
   { icon: MapPin, label: "Alamat Tersimpan", desc: "2 lokasi", href: "#" },
@@ -11,6 +12,7 @@ const menuItems = [
 
 const Profile = () => {
   const navigate = useNavigate();
+  const [isDriver, setIsDriver] = useState(false);
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -48,6 +50,29 @@ const Profile = () => {
         <div className="text-center">
           <p className="text-lg font-extrabold text-accent-foreground">Rp 250K</p>
           <p className="text-[10px] text-muted-foreground font-medium">PYU-Pay</p>
+        </div>
+      </div>
+
+      {/* Driver/Passenger Toggle */}
+      <div className="mx-4 mt-3 bg-card rounded-xl border border-border p-3 shadow-sm">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            {isDriver ? <Car className="h-5 w-5 text-primary" /> : <UserCheck className="h-5 w-5 text-muted-foreground" />}
+            <div>
+              <p className="text-sm font-semibold text-foreground">{isDriver ? "Mode Driver" : "Mode Penumpang"}</p>
+              <p className="text-xs text-muted-foreground">{isDriver ? "Anda aktif sebagai driver" : "Beralih ke mode driver"}</p>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              const next = !isDriver;
+              setIsDriver(next);
+              if (next) navigate("/driver?mode=hailing");
+            }}
+            className={`relative w-12 h-7 rounded-full transition-colors ${isDriver ? "bg-primary" : "bg-muted"}`}
+          >
+            <span className={`absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-card shadow transition-transform ${isDriver ? "translate-x-5" : "translate-x-0"}`} />
+          </button>
         </div>
       </div>
 
