@@ -1,65 +1,42 @@
 
 
-# Screen Design Polish — All Key Screens
+# Smart Suggestions — Context-Aware Cross-Sell Banners
 
-## Current State
-All screens exist but need design refinement for consistency and completeness. Here's what each needs:
+## Overview
+Add intelligent suggestion banners that appear at key decision points, nudging users toward the optimal service mode based on context (destination, time, seat availability).
 
 ## Changes
 
-### 1. HOME (`Index.tsx`)
-Already solid. Minor polish:
-- Add subtle greeting animation or time-based greeting ("Selamat pagi/siang/sore")
-- Ensure mode switch cards have equal visual weight
-- No structural changes needed
+### 1. New Component: `SmartSuggestion.tsx`
+A reusable dismissible banner component with variants:
+- **shuttle-suggest** (green): "Shuttle ke KNO mulai Rp 75.000 — hemat 40%" with CTA to `/shuttle`
+- **hailing-suggest** (amber): "Butuh cepat? Hailing tersedia dalam 3 menit" with CTA to `/search`
+- **no-seats** (red/amber): "Kursi penuh? Pesan Hailing langsung ke tujuan" with CTA to `/search`
 
-### 2. HAILING FLOW
+Each variant has an icon, message text, and a small action button. Includes a dismiss (X) button.
 
-**Map Screen (`RideSelect.tsx`)**
-- Add animated route line placeholder between pickup/destination markers in the route info card
-- Add "Jarak: ~39 km" distance label to route summary
-- Add subtle pulse animation on selected vehicle card
+### 2. `LocationSearch.tsx` — Airport destination suggestion
+When user taps "KNO Airport" (or any airport result), show a shuttle suggestion banner between the search header and results:
+- Banner: "🚌 Shuttle ke KNO mulai Rp 75.000 — hemat hingga 40%"
+- CTA button: "Lihat Shuttle" → navigates to `/shuttle`
+- Still allows proceeding to hailing via the normal flow
 
-**Driver Tracking (`LiveTracking.tsx`)**
-- Add progress steps indicator at top (Mencari → Driver ditemukan → Dalam perjalanan → Tiba)
-- Add estimated arrival countdown that's more prominent
-- Add vehicle plate number in a highlighted badge for easy identification
-- Add "Bagikan lokasi" (share location) button
+### 3. `RideSelect.tsx` — Late/urgent hailing confirmation
+Add a subtle "fastest option" highlight. No cross-sell needed here since user already chose hailing. Instead, on the route info card, add a small time-context chip:
+- If current hour is close to a shuttle departure: show "💡 Shuttle berangkat 06:00 — Rp 75.000" as an info banner below the route card
+- Tapping it navigates to `/shuttle`
 
-### 3. SHUTTLE FLOW
+### 4. `ShuttleSelect.tsx` — No seats fallback
+When a user selects a departure with `seatsLeft === 0` (or when all departures are nearly full), show a hailing fallback banner at the bottom:
+- Banner: "🏍️ Kursi terbatas? Hailing tersedia — sampai dalam ~45 menit"
+- CTA: "Pesan Hailing" → navigates to `/search`
+- Also show inline on departures where `seatsLeft <= 1`: a small "Coba Hailing?" link
 
-**Pickup Selection (`ShuttleSelect.tsx`)**
-- Add route header with visual from→to indicator (not just text)
-- Add seat availability color coding: green (>4), yellow (2-3), red (1)
-- Add "Tersedia hari ini" section header
-
-**Schedule List** (already in `ShuttleSelect.tsx`)
-- Add departure countdown for nearest shuttle ("Berangkat dalam 45 menit")
-- Highlight the next upcoming departure with a "Segera" badge
-
-**Seat Map (`ShuttleSeatSelect.tsx`)**
-- Add seat legend (Available/Taken/Selected) at top
-- Add departure info summary bar (time, route, vehicle)
-- Add driver seat indicator and door position for spatial orientation
-
-### 4. TICKET (`ShuttleTicket.tsx`)
-- Add dashed separator line between QR section and trip info (tear-off effect)
-- Add countdown to departure ("Berangkat dalam 2 jam 15 menit")
-- Add "Tunjukkan ke driver" instruction text near QR code
-- Add ticket status badge ("Aktif" / "Digunakan" / "Kedaluwarsa")
-
-### 5. TRACKING (`LiveTracking.tsx`)
-- Make the screen mode-aware: detect if tracking hailing or shuttle
-- **Hailing mode**: current layout (driver info, contact buttons, cancel)
-- **Shuttle mode**: show shuttle vehicle info, all pickup stops with ETA per stop, current stop highlighted, no cancel (show "Hubungi CS" instead), passenger count
+## Files to Create
+1. `src/components/SmartSuggestion.tsx` — reusable suggestion banner
 
 ## Files to Edit
-1. `src/pages/Index.tsx` — time-based greeting
-2. `src/pages/RideSelect.tsx` — distance label, vehicle selection polish
-3. `src/pages/LiveTracking.tsx` — progress steps, mode-aware (hailing vs shuttle), share location
-4. `src/pages/ShuttleSelect.tsx` — seat availability colors, next departure badge, countdown
-5. `src/pages/ShuttleSeatSelect.tsx` — seat legend, departure summary bar, driver seat indicator
-6. `src/pages/ShuttleTicket.tsx` — departure countdown, status badge, tear-off styling, instruction text
-
-## No New Dependencies
+1. `src/pages/LocationSearch.tsx` — add shuttle suggestion when airport selected
+2. `src/pages/RideSelect.tsx` — add shuttle alternative info banner
+3. `src/pages/ShuttleSelect.tsx` — add hailing fallback when seats are scarce
 
