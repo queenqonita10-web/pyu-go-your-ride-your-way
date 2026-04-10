@@ -1,4 +1,4 @@
-import { LayoutDashboard, Car, Bus, Map, DollarSign } from "lucide-react";
+import { LayoutDashboard, Car, Bus, Map, DollarSign, ClipboardList, TrendingUp } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import {
@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
-  { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
-  { title: "Hailing Analytics", url: "/admin/hailing", icon: Car },
-  { title: "Shuttle Analytics", url: "/admin/shuttle", icon: Bus },
+  { title: "Overview", url: "/admin", icon: LayoutDashboard },
+  { title: "Trips", url: "/admin/trips", icon: Car },
+  { title: "Bookings", url: "/admin/bookings", icon: ClipboardList },
+  { title: "Revenue", url: "/admin/revenue", icon: TrendingUp },
   { title: "Rayons", url: "/admin/rayons", icon: Map },
   { title: "Pricing", url: "/admin/pricing", icon: DollarSign },
 ];
