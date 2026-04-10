@@ -21,6 +21,12 @@ import NotFound from "./pages/NotFound";
 import DriverDashboard from "./pages/DriverDashboard";
 import DriverEarnings from "./pages/DriverEarnings";
 import DriverWithdraw from "./pages/DriverWithdraw";
+import AdminLayout from "./layouts/AdminLayout";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import HailingAnalytics from "./pages/admin/HailingAnalytics";
+import ShuttleAnalytics from "./pages/admin/ShuttleAnalytics";
+import RayonManagement from "./pages/admin/RayonManagement";
+import PricingControl from "./pages/admin/PricingControl";
 
 const queryClient = new QueryClient();
 
@@ -46,6 +52,13 @@ const App = () => (
           <Route path="/driver" element={<DriverDashboard />} />
           <Route path="/driver/earnings" element={<DriverEarnings />} />
           <Route path="/driver/withdraw" element={<DriverWithdraw />} />
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="hailing" element={<HailingAnalytics />} />
+            <Route path="shuttle" element={<ShuttleAnalytics />} />
+            <Route path="rayons" element={<RayonManagement />} />
+            <Route path="pricing" element={<PricingControl />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
         <BottomNav />
