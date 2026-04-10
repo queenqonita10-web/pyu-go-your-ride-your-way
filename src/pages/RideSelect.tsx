@@ -4,6 +4,7 @@ import { ArrowLeft, Users, Clock, Tag, Route } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import MapView from "@/components/MapView";
+import SmartSuggestion from "@/components/SmartSuggestion";
 
 interface VehicleOption {
   id: string;
@@ -69,6 +70,12 @@ const RideSelect = () => {
       <div className="bg-card rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.08)] border-t border-border animate-slide-up">
         <div className="w-10 h-1 bg-muted rounded-full mx-auto mt-2" />
         <div className="p-4 space-y-3">
+          <SmartSuggestion
+            variant="shuttle-suggest"
+            message="💡 Shuttle berangkat 06:00 — Rp 75.000"
+            cta="Lihat Shuttle"
+            to="/shuttle"
+          />
           <h3 className="font-bold text-foreground">Pilih Kendaraan</h3>
 
           {vehicles.map((v) => (
