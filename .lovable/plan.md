@@ -1,42 +1,38 @@
 
 
-# Smart Suggestions — Context-Aware Cross-Sell Banners
+# Conversion Optimization — Price, Savings, Urgency, Speed
 
 ## Overview
-Add intelligent suggestion banners that appear at key decision points, nudging users toward the optimal service mode based on context (destination, time, seat availability).
+Optimize the booking funnel for higher conversion by surfacing price/savings earlier, adding urgency cues, and streamlining the path to booking.
 
 ## Changes
 
-### 1. New Component: `SmartSuggestion.tsx`
-A reusable dismissible banner component with variants:
-- **shuttle-suggest** (green): "Shuttle ke KNO mulai Rp 75.000 — hemat 40%" with CTA to `/shuttle`
-- **hailing-suggest** (amber): "Butuh cepat? Hailing tersedia dalam 3 menit" with CTA to `/search`
-- **no-seats** (red/amber): "Kursi penuh? Pesan Hailing langsung ke tujuan" with CTA to `/search`
+### 1. Home Screen (`Index.tsx`) — Show price & seats early
+- Add live seat availability to the shuttle card: "🔥 3 kursi tersisa — berangkat 06:00" below the shuttle pickup/dropoff selector
+- Show price comparison inline: "Mulai Rp 75.000/org" on shuttle mode, "~Rp 300rb" on hailing mode as a subtle label on the CTA area
+- PricePreview already shows savings — keep as-is
 
-Each variant has an icon, message text, and a small action button. Includes a dismiss (X) button.
+### 2. Location Search (`LocationSearch.tsx`) — Price on airport result
+- Add price tag on the KNO Airport pinned button: "Mulai Rp 75.000" next to "Popular" badge
+- Add hailing price comparison: "vs ~Rp 350rb Hailing" as small muted text below the shuttle suggestion
 
-### 2. `LocationSearch.tsx` — Airport destination suggestion
-When user taps "KNO Airport" (or any airport result), show a shuttle suggestion banner between the search header and results:
-- Banner: "🚌 Shuttle ke KNO mulai Rp 75.000 — hemat hingga 40%"
-- CTA button: "Lihat Shuttle" → navigates to `/shuttle`
-- Still allows proceeding to hailing via the normal flow
+### 3. Shuttle Select (`ShuttleSelect.tsx`) — Urgency & savings
+- Add a sticky savings comparison bar at top below header: "💰 Hemat Rp 200rb+ vs Hailing" 
+- Add urgency text on low-seat departures: "🔥 Sisa 3 kursi!" (bold, colored) replacing the plain seat count when seats ≤ 3
+- Add a "Termurah" badge on the cheapest departure option
+- Auto-select the nearest departure on load (pre-select first item) so CTA is immediately visible — reduces taps
 
-### 3. `RideSelect.tsx` — Late/urgent hailing confirmation
-Add a subtle "fastest option" highlight. No cross-sell needed here since user already chose hailing. Instead, on the route info card, add a small time-context chip:
-- If current hour is close to a shuttle departure: show "💡 Shuttle berangkat 06:00 — Rp 75.000" as an info banner below the route card
-- Tapping it navigates to `/shuttle`
+### 4. Shuttle Booking (`ShuttleBooking.tsx`) — Speed optimization
+- Add a comparison line in price breakdown: "Hailing untuk rute ini: ~Rp 350.000" with strikethrough styling to reinforce savings
+- Add countdown urgency: "⏱ Berangkat dalam 45 menit — segera konfirmasi" above CTA
 
-### 4. `ShuttleSelect.tsx` — No seats fallback
-When a user selects a departure with `seatsLeft === 0` (or when all departures are nearly full), show a hailing fallback banner at the bottom:
-- Banner: "🏍️ Kursi terbatas? Hailing tersedia — sampai dalam ~45 menit"
-- CTA: "Pesan Hailing" → navigates to `/search`
-- Also show inline on departures where `seatsLeft <= 1`: a small "Coba Hailing?" link
-
-## Files to Create
-1. `src/components/SmartSuggestion.tsx` — reusable suggestion banner
+### 5. Ride Select (`RideSelect.tsx`) — Show savings opportunity
+- Add a small comparison note under the shuttle SmartSuggestion: price savings amount "Hemat ~Rp 250rb"
 
 ## Files to Edit
-1. `src/pages/LocationSearch.tsx` — add shuttle suggestion when airport selected
-2. `src/pages/RideSelect.tsx` — add shuttle alternative info banner
-3. `src/pages/ShuttleSelect.tsx` — add hailing fallback when seats are scarce
+1. `src/pages/Index.tsx` — seat availability + price on shuttle mode
+2. `src/pages/LocationSearch.tsx` — price on airport result
+3. `src/pages/ShuttleSelect.tsx` — urgency labels, auto-select, savings bar, cheapest badge
+4. `src/pages/ShuttleBooking.tsx` — hailing comparison, countdown urgency
+5. `src/pages/RideSelect.tsx` — savings amount on shuttle suggestion
 
