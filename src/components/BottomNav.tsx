@@ -9,7 +9,7 @@ const tabs = [
   { icon: User, label: "Profil", path: "/profile" },
 ];
 
-const hiddenPaths = ["/tracking", "/search", "/ride-select", "/booking", "/shuttle", "/shuttle-seat", "/shuttle-booking", "/driver"];
+const hiddenPaths = ["/tracking", "/search", "/ride-select", "/booking", "/shuttle", "/shuttle-seat", "/shuttle-booking", "/driver", "/admin"];
 
 const BottomNav = () => {
   const location = useLocation();
