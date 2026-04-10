@@ -54,26 +54,43 @@ const Profile = () => {
       </div>
 
       {/* Driver/Passenger Toggle */}
-      <div className="mx-4 mt-3 bg-card rounded-xl border border-border p-3 shadow-sm">
+      <div className="mx-4 mt-3 bg-card rounded-xl border border-border p-3 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             {isDriver ? <Car className="h-5 w-5 text-primary" /> : <UserCheck className="h-5 w-5 text-muted-foreground" />}
             <div>
               <p className="text-sm font-semibold text-foreground">{isDriver ? "Mode Driver" : "Mode Penumpang"}</p>
-              <p className="text-xs text-muted-foreground">{isDriver ? "Anda aktif sebagai driver" : "Beralih ke mode driver"}</p>
+              <p className="text-xs text-muted-foreground">{isDriver ? "Pilih tipe driver di bawah" : "Beralih ke mode driver"}</p>
             </div>
           </div>
           <button
-            onClick={() => {
-              const next = !isDriver;
-              setIsDriver(next);
-              if (next) navigate("/driver?mode=hailing");
-            }}
+            onClick={() => setIsDriver(!isDriver)}
             className={`relative w-12 h-7 rounded-full transition-colors ${isDriver ? "bg-primary" : "bg-muted"}`}
           >
             <span className={`absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-card shadow transition-transform ${isDriver ? "translate-x-5" : "translate-x-0"}`} />
           </button>
         </div>
+
+        {isDriver && (
+          <div className="flex gap-2">
+            <button
+              onClick={() => navigate("/driver?mode=hailing")}
+              className="flex-1 flex flex-col items-center gap-1.5 p-3 rounded-xl bg-secondary hover:bg-primary/10 border border-border hover:border-primary transition-colors"
+            >
+              <span className="text-2xl">🚗</span>
+              <span className="text-xs font-bold text-foreground">Hailing</span>
+              <span className="text-[10px] text-muted-foreground">Antar jemput</span>
+            </button>
+            <button
+              onClick={() => navigate("/driver?mode=shuttle")}
+              className="flex-1 flex flex-col items-center gap-1.5 p-3 rounded-xl bg-secondary hover:bg-primary/10 border border-border hover:border-primary transition-colors"
+            >
+              <span className="text-2xl">🚐</span>
+              <span className="text-xs font-bold text-foreground">Shuttle</span>
+              <span className="text-[10px] text-muted-foreground">Rute tetap</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Menu */}
