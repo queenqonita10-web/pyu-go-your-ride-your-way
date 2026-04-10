@@ -19,6 +19,7 @@ import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
 import DriverDashboard from "./pages/DriverDashboard";
+import DriverEarnings from "./pages/DriverEarnings";
 
 const queryClient = new QueryClient();
 
