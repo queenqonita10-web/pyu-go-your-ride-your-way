@@ -18,6 +18,7 @@ import RideHistory from "./pages/RideHistory";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
+import DriverDashboard from "./pages/DriverDashboard";
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/history" element={<RideHistory />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/driver" element={<DriverDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <BottomNav />
