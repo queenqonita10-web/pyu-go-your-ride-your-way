@@ -92,9 +92,15 @@ const Index = () => {
 
           {/* Savings Banner */}
           {mode === "shuttle" && (
-            <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20">
-              <span className="text-sm">💰</span>
-              <span className="text-xs font-bold text-green-600">Hemat hingga 40% dibanding Hailing</span>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-success/10 border border-success/20">
+                <span className="text-sm">🔥</span>
+                <span className="text-xs font-bold text-success">3 kursi tersisa — berangkat 06:00</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-success/10 border border-success/20">
+                <span className="text-sm">💰</span>
+                <span className="text-xs font-bold text-success">Mulai Rp 75.000/org • Hemat hingga 40%</span>
+              </div>
             </div>
           )}
 

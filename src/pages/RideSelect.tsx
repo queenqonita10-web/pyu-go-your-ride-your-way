@@ -72,7 +72,7 @@ const RideSelect = () => {
         <div className="p-4 space-y-3">
           <SmartSuggestion
             variant="shuttle-suggest"
-            message="💡 Shuttle berangkat 06:00 — Rp 75.000"
+            message="💡 Shuttle berangkat 06:00 — Rp 75.000 • Hemat ~Rp 250rb"
             cta="Lihat Shuttle"
             to="/shuttle"
           />
