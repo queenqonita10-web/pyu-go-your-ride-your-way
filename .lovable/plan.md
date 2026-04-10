@@ -1,38 +1,47 @@
 
 
-# Conversion Optimization — Price, Savings, Urgency, Speed
+# Driver Mode — Hailing & Shuttle Driver Screens
 
 ## Overview
-Optimize the booking funnel for higher conversion by surfacing price/savings earlier, adding urgency cues, and streamlining the path to booking.
+Add a driver-facing interface that adapts based on mode (Hailing vs Shuttle). Accessible via `/driver?mode=hailing` or `/driver?mode=shuttle`. This is a prototype UI — no backend, all mock data.
 
-## Changes
+## New Pages
 
-### 1. Home Screen (`Index.tsx`) — Show price & seats early
-- Add live seat availability to the shuttle card: "🔥 3 kursi tersisa — berangkat 06:00" below the shuttle pickup/dropoff selector
-- Show price comparison inline: "Mulai Rp 75.000/org" on shuttle mode, "~Rp 300rb" on hailing mode as a subtle label on the CTA area
-- PricePreview already shows savings — keep as-is
+### 1. `src/pages/DriverDashboard.tsx` — Mode-adaptive driver home
+Uses `?mode=shuttle|hailing` search param to switch UI.
 
-### 2. Location Search (`LocationSearch.tsx`) — Price on airport result
-- Add price tag on the KNO Airport pinned button: "Mulai Rp 75.000" next to "Popular" badge
-- Add hailing price comparison: "vs ~Rp 350rb Hailing" as small muted text below the shuttle suggestion
+**Hailing Driver UI:**
+- **Incoming ride card** with passenger name, pickup/destination, distance, estimated fare
+- "Terima" (Accept) / "Tolak" (Decline) buttons with countdown timer (15s auto-decline)
+- After accept → switches to **Navigation state**: map with route line, pickup address, "Sudah di Lokasi" (Arrived) button
+- After arrived → **Trip in progress**: destination shown, "Selesaikan Perjalanan" (Complete Trip) button
+- After complete → fare summary card with "Kembali ke Beranda" button
+- Status stepper at top: Menunggu → Menuju Jemput → Dalam Perjalanan → Selesai
 
-### 3. Shuttle Select (`ShuttleSelect.tsx`) — Urgency & savings
-- Add a sticky savings comparison bar at top below header: "💰 Hemat Rp 200rb+ vs Hailing" 
-- Add urgency text on low-seat departures: "🔥 Sisa 3 kursi!" (bold, colored) replacing the plain seat count when seats ≤ 3
-- Add a "Termurah" badge on the cheapest departure option
-- Auto-select the nearest departure on load (pre-select first item) so CTA is immediately visible — reduces taps
+**Shuttle Driver UI:**
+- **Route header**: "Medan Fair → KNO Airport" with departure time
+- **Pickup checklist**: list of stops with passenger counts, each stop has a checkbox "Tiba di Halte" (Arrived at Stop)
+- When stop is checked → expands to show **passenger validation list**: passenger names with check icons to confirm boarding
+- "Berangkat" (Depart) button enabled only after all passengers at current stop are validated
+- Progress through stops shown as a vertical timeline (reuse pattern from LiveTracking shuttle stops)
+- Final stop → "Perjalanan Selesai" summary with total passengers served
 
-### 4. Shuttle Booking (`ShuttleBooking.tsx`) — Speed optimization
-- Add a comparison line in price breakdown: "Hailing untuk rute ini: ~Rp 350.000" with strikethrough styling to reinforce savings
-- Add countdown urgency: "⏱ Berangkat dalam 45 menit — segera konfirmasi" above CTA
+### 2. `src/components/DriverBottomNav.tsx` — Driver-specific bottom nav
+- Tabs: Beranda (Home), Riwayat (History), Penghasilan (Earnings), Akun (Account)
+- Only shown on `/driver*` routes
 
-### 5. Ride Select (`RideSelect.tsx`) — Show savings opportunity
-- Add a small comparison note under the shuttle SmartSuggestion: price savings amount "Hemat ~Rp 250rb"
+## Files to Create
+1. `src/pages/DriverDashboard.tsx` — main driver screen with mode switching
+2. `src/components/DriverBottomNav.tsx` — driver-specific navigation
 
 ## Files to Edit
-1. `src/pages/Index.tsx` — seat availability + price on shuttle mode
-2. `src/pages/LocationSearch.tsx` — price on airport result
-3. `src/pages/ShuttleSelect.tsx` — urgency labels, auto-select, savings bar, cheapest badge
-4. `src/pages/ShuttleBooking.tsx` — hailing comparison, countdown urgency
-5. `src/pages/RideSelect.tsx` — savings amount on shuttle suggestion
+1. `src/App.tsx` — add `/driver` route
+2. `src/components/BottomNav.tsx` — hide on `/driver` paths
+
+## Technical Notes
+- All state managed with `useState` — no backend needed
+- Mock data for incoming rides, passenger lists, stop checklists
+- Reuse existing components: `MapView`, `Badge`, `Button`, `cn()` utility
+- Step transitions use state machine pattern: `idle → accepted → navigating → arrived → in_progress → completed`
+- Shuttle uses checklist pattern: `stops[]` with `arrived` and `passengers[].validated` booleans
 
