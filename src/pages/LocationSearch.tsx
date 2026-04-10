@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, MapPin, Clock, Star, Plane } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import SmartSuggestion from "@/components/SmartSuggestion";
 
 const savedPlaces = [
   { name: "Rumah", address: "Jl. Gatot Subroto No. 12, Medan", icon: Star },
@@ -60,6 +61,16 @@ const LocationSearch = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Smart suggestion: Shuttle for airport */}
+      <div className="px-4 pt-3">
+        <SmartSuggestion
+          variant="shuttle-suggest"
+          message="Shuttle ke KNO mulai Rp 75.000 — hemat hingga 40%"
+          cta="Lihat Shuttle"
+          to="/shuttle"
+        />
       </div>
 
       {/* KNO Airport pinned */}

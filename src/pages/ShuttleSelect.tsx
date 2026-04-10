@@ -4,6 +4,7 @@ import { ArrowLeft, Clock, Users, MapPin, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import SmartSuggestion from "@/components/SmartSuggestion";
 
 interface ShuttleDeparture {
   id: string;
@@ -122,9 +123,29 @@ const ShuttleSelect = () => {
             {dep.id === nearestId && (
               <p className="text-[10px] text-primary font-semibold mt-1.5">⏱ Berangkat dalam 45 menit</p>
             )}
+            {dep.seatsLeft <= 1 && (
+              <p
+                onClick={(e) => { e.stopPropagation(); navigate("/search"); }}
+                className="text-[10px] text-destructive font-bold mt-1 cursor-pointer hover:underline"
+              >
+                🏍️ Coba Hailing?
+              </p>
+            )}
           </button>
         ))}
       </div>
+
+      {/* Smart suggestion: hailing fallback when seats scarce */}
+      {selected && departures.find(d => d.id === selected)?.seatsLeft! <= 1 && (
+        <div className="px-4 pb-2">
+          <SmartSuggestion
+            variant="no-seats"
+            message="Kursi terbatas? Hailing tersedia — sampai dalam ~45 menit"
+            cta="Pesan Hailing"
+            to="/search"
+          />
+        </div>
+      )}
 
       {/* CTA */}
       {selected && (
